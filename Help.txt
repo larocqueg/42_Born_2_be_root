@@ -1,0 +1,110 @@
+1 - O que é uma máquina virtual?
+
+Uma máquina virtual utiliza parte do hardware físico da minha máquina para rodar outro sistema operacional, sem a necessidade de instalar o mesmo diretamente no computador. Assim, é possível ter vários sistemas operacionais rodando simultaneamente em uma única máquina, facilitando o uso de diferentes sistemas para usuários que precisam de mais de um.
+2 - Escolha do sistema operacional
+
+Escolhi o Debian, pois, como mencionado no PDF, é o mais recomendado para pessoas com pouca experiência em VMs, por ser um sistema mais estável e "simples". No entanto, após pesquisar sobre o Rocky, percebi que ele é mais voltado para o uso empresarial.
+3 - Quais os benefícios das VMs?
+
+Como dito anteriormente, as VMs permitem usar vários sistemas operacionais em uma única máquina simultaneamente, o que diminui os custos com máquinas extras e facilita o trabalho de pessoas que precisam de diferentes sistemas operacionais.
+4 - Diferença entre aptitude e apt
+
+APT: Ferramenta mais direta e simples, ideal para comandos rápidos e eficientes para tarefas comuns, como:
+
+Atualização da lista de pacotes (apt update);
+Atualização de pacotes instalados (apt upgrade);
+Instalação de pacotes (apt install);
+Remoção de pacotes (apt remove).
+Aptitude: Oferece uma interface interativa no terminal de comando, facilitando a busca por pacotes e atualizações de maneira visual. Além disso, conta com um algoritmo avançado para resolver problemas de dependência e outros problemas que podem ocorrer durante a instalação, atualização ou remoção de pacotes.
+
+Atualização da lista de pacotes (aptitude update);
+Atualização de pacotes instalados (aptitude upgrade);
+Instalação de pacotes (aptitude install);
+Remoção de pacotes (aptitude remove);
+Busca por pacotes (aptitude search).
+Resumindo, o apt é melhor para tarefas simples e rápidas, enquanto o aptitude é mais adequado para resolver problemas de dependência e realizar uma navegação interativa.
+
+5 - O que é AppArmor?
+
+AppArmor é uma ferramenta de segurança para Linux que restringe permissões de aplicativos e processos no sistema. Seu objetivo é limitar os impactos de falhas de segurança, impedindo que apps mal-intencionados ou comprometidos afetem o sistema.
+6 - Sistema UFW instalado?
+
+O que é? → UFW (Uncomplicated Firewall) é um firewall para sistemas Linux, projetado para aumentar a segurança contra acessos não autorizados, bloqueando portas e protocolos desnecessários.
+
+Comandos:
+
+sudo ufw status numbered
+sudo systemctl status ufw
+sudo ufw status verbose (verificar regras ativas no UFW)
+sudo ufw allow 8080 (adicionar nova regra ao UFW)
+sudo ufw delete allow 8080 (remover a regra criada)
+7 - SSH, o que é?
+
+SSH (Secure Shell) é um protocolo utilizado para acessar e administrar sistemas remotamente de forma segura, sendo amplamente usado em ambientes de servidores e administração de sistemas.
+Comandos:
+
+sudo systemctl status ssh
+sudo systemctl status sshd
+sudo vim /etc/ssh/sshd_config (abrir o arquivo de configuração do SSH para visualizar a porta 4242 que foi configurada)
+Caso alguma modificação seja feita, usar: sudo systemctl restart ssh
+sudo ss -tuln | grep 4242 (verificar se o SSH está executando na porta 4242)
+PermitRootLogin no (garante que o root não pode fazer login via SSH, aumentando a segurança)
+Para conectar-se a um usuário existente via SSH, use o comando:
+
+ssh <nome_do_usuario>@<ip_do_servidor> -p 4242
+8 - Verificando usuários existentes e grupos
+
+Para verificar os usuários, usa-se o comando: cat /etc/passwd (exibe o conteúdo do arquivo que contém os nomes dos usuários);
+Para verificar os grupos, usa-se: cat /etc/group (exibe o conteúdo do arquivo que contém os nomes dos grupos).
+9 - Criando usuários e grupos
+
+Para criar um novo usuário, usa-se o comando: sudo adduser <nome_do_usuario>;
+Para criar um grupo, usa-se o comando: sudo groupadd <nome_do_grupo>.
+10 - Associando usuários a novos grupos
+
+Para adicionar um usuário a um novo grupo, usa-se: sudo usermod -aG <nome_do_grupo> <nome_do_usuario>;
+Flags:
+
+-aG: a → adiciona o usuário a um grupo novo sem removê-lo de grupos existentes; G → especifica os grupos adicionais ao qual o usuário será adicionado.
+11 - Verificando o nome do host
+
+Usa-se o comando: hostnamectl (mostra o nome do host e outros detalhes sobre a máquina).
+12 - Alterar nome do host
+
+Para alterar o nome do host, usa-se o comando: sudo hostnamectl set-hostname <novo_nome_de_host>;
+Após, altere o nome no arquivo /etc/hostname com: sudo vim /etc/hostname;
+Também altere o arquivo /etc/hosts com: sudo vim /etc/hosts;
+Depois, reinicie o sistema com: sudo reboot. Após reiniciar, use o comando hostname para verificar se a alteração foi bem-sucedida.
+13 - Partições
+
+Usa-se o comando: lsblk. Este comando exibirá as seguintes informações:
+NAME (nome do dispositivo ou partição);
+SIZE (tamanho do dispositivo ou partição);
+TYPE (tipo [disk para discos e part para partições]);
+MOUNTPOINT (onde a partição está montada no sistema).
+14 - LVM (Logical Volume Manager)
+
+LVM é uma tecnologia de gerenciamento de volumes lógicos, que oferece maior flexibilidade e dinamismo em comparação às partições tradicionais. Cria uma camada de abstração entre o hardware físico (discos) e o sistema de arquivos, facilitando a expansão, redução ou reorganização do armazenamento.
+Benefícios:
+
+Flexibilidade: permite redimensionar, adicionar ou remover discos e volumes sem interromper o sistema;
+Snapshots: possibilita a criação de cópias de segurança instantâneas dos volumes;
+Estabilidade: facilita a expansão do armazenamento, adicionando mais discos ao volume group;
+Gerenciamento simplificado: oferece uma visão unificada de todos os discos e volumes do sistema.
+15 - Sudo (Super User Do)
+
+O comando sudo é utilizado para conceder permissões temporárias de administração para comandos no terminal. Sempre pede a senha do usuário que está executando o comando, mas, após a primeira execução, não pedirá mais a senha, a menos que o terminal seja reiniciado.
+
+Nem todos os usuários podem usar o sudo, apenas aqueles que fazem parte do grupo sudo, garantindo maior segurança à máquina.
+
+Para verificar se o sudo está instalado, use: which sudo (este comando retornará o caminho onde o sudo está localizado).
+
+16 - Cron
+
+Cron é um utilitário do Linux que permite agendar tarefas para serem executadas automaticamente.
+Comandos:
+
+crontab -e (usado para agendar o script);
+*/10 * * * * <caminho_do_script> (*/10: significa "a cada 10 minutos", o * corresponde a qualquer hora, dia, mês e dia da semana);
+crontab -l (exibe as entradas recentemente adicionadas);
+sudo cat /etc/crontab && sudo cat /etc/cron.d/* (para garantir que não existem tarefas agendadas para rodar no boot).
