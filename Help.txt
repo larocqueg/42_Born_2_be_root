@@ -108,3 +108,69 @@ crontab -e (usado para agendar o script);
 */10 * * * * <caminho_do_script> (*/10: significa "a cada 10 minutos", o * corresponde a qualquer hora, dia, mês e dia da semana);
 crontab -l (exibe as entradas recentemente adicionadas);
 sudo cat /etc/crontab && sudo cat /etc/cron.d/* (para garantir que não existem tarefas agendadas para rodar no boot).
+
+17 - Script
+
+    System Architecture (arc):
+        arc=$(uname -a): Gets the system's architecture information (kernel version, hostname, OS type, etc.).
+
+    CPU Information:
+        pcpu=$(grep "physical id" /proc/cpuinfo | sort | uniq | wc -l): Counts the number of physical CPUs by looking at physical id in /proc/cpuinfo.
+        vcpu=$(grep "^processor" /proc/cpuinfo | wc -l): Counts the number of virtual CPUs (processors) in the system.
+
+    Memory Information:
+        fram=$(free -m | awk '$1 == "Mem:" {print $2}'): Gets the total system memory in MB.
+        uram=$(free -m | awk '$1 == "Mem:" {print $3}'): Gets the used memory in MB.
+        pram=$(free | awk '$1 == "Mem:" {printf("%.2f"), $3/$2*100}'): Calculates and prints the percentage of used memory.
+
+    Disk Information:
+        fdisk=$(df -BG | grep '^/dev/' | grep -v '/boot$' | awk '{ft += $2} END {print ft}'): Gets the total disk space used by all devices, excluding /boot.
+        udisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} END {print ut}'): Gets the used disk space in MB, excluding /boot.
+        pdisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} {ft+= $2} END {printf("%d"), ut/ft*100}'): Calculates the percentage of used disk space.
+
+    CPU Load:
+        cpul=$(top -bn1 | grep '^%Cpu' | cut -c 9- | xargs | awk '{printf("%.1f%%"), $1 + $3}'): Fetches the current CPU load (user + system).
+
+    Last Boot:
+        lb=$(who -b | awk '$1 == "system" {print $3 " " $4}'): Shows the date and time of the last system boot.
+
+    LVM Usage:
+        lvmu=$(if [ $(lsblk | grep "lvm" | wc -l) -eq 0 ]; then echo no; else echo yes; fi): Checks if LVM (Logical Volume Manager) is being used by searching for "lvm" in the block devices.
+
+    Network Connections:
+        ctcp=$(ss -Ht state established | wc -l): Counts the number of established TCP connections.
+
+    User Logins:
+        ulog=$(users | wc -w): Counts the number of currently logged-in users.
+
+    Network Information:
+        ip=$(hostname -I): Gets the system's IP address.
+        mac=$(ip link show | grep "ether" | awk '{print $2}'): Retrieves the MAC address of the system.
+
+    Sudo Command Usage:
+        cmds=$(journalctl _COMM=sudo | grep COMMAND | wc -l): Counts the number of commands run using sudo (from the journal logs).
+
+    Wall Command:
+        Finally, the wall command is used to broadcast the collected system information to all logged-in users. The information includes:
+            Architecture
+            CPU (physical and virtual)
+            Memory usage (total and used with percentage)
+            Disk usage (total, used with percentage)
+            CPU load
+            Last boot time
+            LVM usage
+            Number of established TCP connections
+            Logged-in users
+            Network details (IP and MAC addresses)
+            Number of sudo commands executed
+
+The script combines a lot of useful system information into a readable format and outputs it to all logged-in users.
+Improvements / Potential Issues:
+
+    Disk Information Calculation: Your pdisk calculation might have a bug with the format. It uses df -BM (MB), but ft is calculated in GB in the fdisk variable. This might create inconsistency unless you standardize the units. Consider using consistent units for both fdisk and udisk.
+
+    Efficiency: The grep and awk commands in multiple places could be optimized to avoid redundant parsing. For example, you could calculate total disk usage and memory usage in a single command rather than separate ones.
+
+    Error Handling: Some commands (like ss or top) might fail on systems where they're not installed. You might want to add error checks or fallbacks for such cases to make the script more robust.
+
+    Output Formatting: You could format the output more clearly (e.g., aligning columns) to make it easier to read, especially when it's displayed by wall.
