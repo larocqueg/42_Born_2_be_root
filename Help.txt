@@ -1,176 +1,185 @@
-1 - O que é uma máquina virtual?
+1 - What is a virtual machine?
 
-Uma máquina virtual utiliza parte do hardware físico da minha máquina para rodar outro sistema operacional, sem a necessidade de instalar o mesmo diretamente no computador. Assim, é possível ter vários sistemas operacionais rodando simultaneamente em uma única máquina, facilitando o uso de diferentes sistemas para usuários que precisam de mais de um.
-2 - Escolha do sistema operacional
+A virtual machine uses part of the physical hardware of my machine to run another operating system, without the need to install it directly on the computer. This allows multiple operating systems to run simultaneously on a single machine, making it easier for users who need more than one system to use different environments.
 
-Escolhi o Debian, pois, como mencionado no PDF, é o mais recomendado para pessoas com pouca experiência em VMs, por ser um sistema mais estável e "simples". No entanto, após pesquisar sobre o Rocky, percebi que ele é mais voltado para o uso empresarial.
-3 - Quais os benefícios das VMs?
+2 - Choice of operating system
 
-Como dito anteriormente, as VMs permitem usar vários sistemas operacionais em uma única máquina simultaneamente, o que diminui os custos com máquinas extras e facilita o trabalho de pessoas que precisam de diferentes sistemas operacionais.
-4 - Diferença entre aptitude e apt
+I chose Debian because, as mentioned in the PDF, it is the most recommended for people with little experience in virtual machines, due to its stability and "simplicity." However, after researching Rocky, I found that it is more focused on enterprise use.
 
-APT: Ferramenta mais direta e simples, ideal para comandos rápidos e eficientes para tarefas comuns, como:
+3 - What are the benefits of VMs?
 
-Atualização da lista de pacotes (apt update);
-Atualização de pacotes instalados (apt upgrade);
-Instalação de pacotes (apt install);
-Remoção de pacotes (apt remove).
-Aptitude: Oferece uma interface interativa no terminal de comando, facilitando a busca por pacotes e atualizações de maneira visual. Além disso, conta com um algoritmo avançado para resolver problemas de dependência e outros problemas que podem ocorrer durante a instalação, atualização ou remoção de pacotes.
+As mentioned earlier, VMs allow multiple operating systems to run on a single machine simultaneously, which reduces costs for additional machines and makes it easier for people who need different operating systems to work.
 
-Atualização da lista de pacotes (aptitude update);
-Atualização de pacotes instalados (aptitude upgrade);
-Instalação de pacotes (aptitude install);
-Remoção de pacotes (aptitude remove);
-Busca por pacotes (aptitude search).
-Resumindo, o apt é melhor para tarefas simples e rápidas, enquanto o aptitude é mais adequado para resolver problemas de dependência e realizar uma navegação interativa.
+4 - Difference between aptitude and apt
 
-5 - O que é AppArmor?
+APT: A more direct and simple tool, ideal for quick and efficient commands for common tasks, such as:
 
-AppArmor é uma ferramenta de segurança para Linux que restringe permissões de aplicativos e processos no sistema. Seu objetivo é limitar os impactos de falhas de segurança, impedindo que apps mal-intencionados ou comprometidos afetem o sistema.
-6 - Sistema UFW instalado?
+    Updating the package list (apt update)
+    Updating installed packages (apt upgrade)
+    Installing packages (apt install)
+    Removing packages (apt remove)
 
-O que é? → UFW (Uncomplicated Firewall) é um firewall para sistemas Linux, projetado para aumentar a segurança contra acessos não autorizados, bloqueando portas e protocolos desnecessários.
+Aptitude: Provides an interactive interface in the terminal, making it easier to search for packages and updates visually. Additionally, it has an advanced algorithm to solve dependency issues and other problems that may arise during package installation, upgrade, or removal.
 
-Comandos:
+    Update the package list (aptitude update)
+    Update installed packages (aptitude upgrade)
+    Install packages (aptitude install)
+    Remove packages (aptitude remove)
+    Search for packages (aptitude search)
 
-sudo ufw status numbered
-sudo systemctl status ufw
-sudo ufw status verbose (verificar regras ativas no UFW)
-sudo ufw allow 8080 (adicionar nova regra ao UFW)
-sudo ufw delete allow 8080 (remover a regra criada)
-7 - SSH, o que é?
+In summary, apt is better for simple and quick tasks, while aptitude is more suitable for solving dependency issues and providing an interactive navigation experience.
 
-SSH (Secure Shell) é um protocolo utilizado para acessar e administrar sistemas remotamente de forma segura, sendo amplamente usado em ambientes de servidores e administração de sistemas.
-Comandos:
+5 - What is AppArmor?
 
-sudo systemctl status ssh
-sudo systemctl status sshd
-sudo vim /etc/ssh/sshd_config (abrir o arquivo de configuração do SSH para visualizar a porta 4242 que foi configurada)
-Caso alguma modificação seja feita, usar: sudo systemctl restart ssh
-sudo ss -tuln | grep 4242 (verificar se o SSH está executando na porta 4242)
-PermitRootLogin no (garante que o root não pode fazer login via SSH, aumentando a segurança)
-Para conectar-se a um usuário existente via SSH, use o comando:
+AppArmor is a security tool for Linux that restricts the permissions of applications and processes on the system. Its goal is to limit the impact of security flaws by preventing malicious or compromised apps from affecting the system.
 
-ssh <nome_do_usuario>@<ip_do_servidor> -p 4242
-8 - Verificando usuários existentes e grupos
+6 - Is UFW installed?
 
-Para verificar os usuários, usa-se o comando: cat /etc/passwd (exibe o conteúdo do arquivo que contém os nomes dos usuários);
-Para verificar os grupos, usa-se: cat /etc/group (exibe o conteúdo do arquivo que contém os nomes dos grupos).
-9 - Criando usuários e grupos
+What is it? → UFW (Uncomplicated Firewall) is a firewall for Linux systems, designed to enhance security against unauthorized access by blocking unnecessary ports and protocols.
 
-Para criar um novo usuário, usa-se o comando: sudo adduser <nome_do_usuario>;
-Para criar um grupo, usa-se o comando: sudo groupadd <nome_do_grupo>.
-10 - Associando usuários a novos grupos
+Commands:
 
-Para adicionar um usuário a um novo grupo, usa-se: sudo usermod -aG <nome_do_grupo> <nome_do_usuario>;
-Flags:
+    sudo ufw status numbered
+    sudo systemctl status ufw
+    sudo ufw status verbose (check active UFW rules)
+    sudo ufw allow 8080 (add a new rule to UFW)
+    sudo ufw delete allow 8080 (remove the created rule)
 
--aG: a → adiciona o usuário a um grupo novo sem removê-lo de grupos existentes; G → especifica os grupos adicionais ao qual o usuário será adicionado.
-11 - Verificando o nome do host
+7 - What is SSH?
 
-Usa-se o comando: hostnamectl (mostra o nome do host e outros detalhes sobre a máquina).
-12 - Alterar nome do host
+SSH (Secure Shell) is a protocol used for securely accessing and managing systems remotely, widely used in server environments and system administration.
 
-Para alterar o nome do host, usa-se o comando: sudo hostnamectl set-hostname <novo_nome_de_host>;
-Após, altere o nome no arquivo /etc/hostname com: sudo vim /etc/hostname;
-Também altere o arquivo /etc/hosts com: sudo vim /etc/hosts;
-Depois, reinicie o sistema com: sudo reboot. Após reiniciar, use o comando hostname para verificar se a alteração foi bem-sucedida.
-13 - Partições
+Commands:
 
-Usa-se o comando: lsblk. Este comando exibirá as seguintes informações:
-NAME (nome do dispositivo ou partição);
-SIZE (tamanho do dispositivo ou partição);
-TYPE (tipo [disk para discos e part para partições]);
-MOUNTPOINT (onde a partição está montada no sistema).
+    sudo systemctl status ssh
+    sudo systemctl status sshd
+    sudo vim /etc/ssh/sshd_config (open the SSH configuration file to view the port 4242 configured) If any modification is made, use: sudo systemctl restart ssh
+    sudo ss -tuln | grep 4242 (check if SSH is running on port 4242)
+    PermitRootLogin no (ensures root cannot log in via SSH, improving security) To connect to an existing user via SSH, use the command:
+
+ssh <username>@<server_ip> -p 4242
+
+8 - Checking existing users and groups
+
+To check the users, use the command: cat /etc/passwd (shows the content of the file containing the user names); To check the groups, use: cat /etc/group (shows the content of the file containing the group names).
+
+9 - Creating users and groups
+
+To create a new user, use the command: sudo adduser <username>; To create a group, use the command: sudo groupadd <group_name>.
+
+10 - Associating users to new groups
+
+To add a user to a new group, use: sudo usermod -aG <group_name> <username>; Flags:
+
+    -aG: a → adds the user to a new group without removing them from existing groups; G → specifies the additional groups to which the user will be added.
+
+11 - Checking the hostname
+
+Use the command: hostnamectl (shows the hostname and other details about the machine).
+
+12 - Changing the hostname
+
+To change the hostname, use the command: sudo hostnamectl set-hostname <new_hostname>; Then, change the name in the /etc/hostname file with: sudo vim /etc/hostname; Also, change the /etc/hosts file with: sudo vim /etc/hosts; Then, reboot the system with: sudo reboot. After rebooting, use the hostname command to verify if the change was successful.
+
+13 - Partitions
+
+Use the command: lsblk. This command will display the following information:
+
+    NAME (device or partition name)
+    SIZE (size of the device or partition)
+    TYPE (type [disk for disks and part for partitions])
+    MOUNTPOINT (where the partition is mounted in the system)
+
 14 - LVM (Logical Volume Manager)
 
-LVM é uma tecnologia de gerenciamento de volumes lógicos, que oferece maior flexibilidade e dinamismo em comparação às partições tradicionais. Cria uma camada de abstração entre o hardware físico (discos) e o sistema de arquivos, facilitando a expansão, redução ou reorganização do armazenamento.
-Benefícios:
+LVM is a logical volume management technology that offers greater flexibility and dynamism compared to traditional partitions. It creates an abstraction layer between the physical hardware (disks) and the filesystem, making it easier to expand, reduce, or reorganize storage.
 
-Flexibilidade: permite redimensionar, adicionar ou remover discos e volumes sem interromper o sistema;
-Snapshots: possibilita a criação de cópias de segurança instantâneas dos volumes;
-Estabilidade: facilita a expansão do armazenamento, adicionando mais discos ao volume group;
-Gerenciamento simplificado: oferece uma visão unificada de todos os discos e volumes do sistema.
+Benefits:
+
+    Flexibility: allows resizing, adding, or removing disks and volumes without interrupting the system.
+    Snapshots: allows creating instant backups of volumes.
+    Stability: makes it easier to expand storage by adding more disks to the volume group.
+    Simplified management: provides a unified view of all disks and volumes in the system.
+
 15 - Sudo (Super User Do)
 
-O comando sudo é utilizado para conceder permissões temporárias de administração para comandos no terminal. Sempre pede a senha do usuário que está executando o comando, mas, após a primeira execução, não pedirá mais a senha, a menos que o terminal seja reiniciado.
+The sudo command is used to grant temporary administrative permissions for commands in the terminal. It always asks for the password of the user executing the command, but after the first execution, it will not ask for the password again unless the terminal is restarted.
 
-Nem todos os usuários podem usar o sudo, apenas aqueles que fazem parte do grupo sudo, garantindo maior segurança à máquina.
+Not all users can use sudo; only those who are part of the sudo group, ensuring greater security for the machine.
 
-Para verificar se o sudo está instalado, use: which sudo (este comando retornará o caminho onde o sudo está localizado).
+To check if sudo is installed, use: which sudo (this command will return the path where sudo is located).
 
 16 - Cron
 
-Cron é um utilitário do Linux que permite agendar tarefas para serem executadas automaticamente.
-Comandos:
+Cron is a Linux utility that allows you to schedule tasks to be executed automatically.
 
-crontab -e (usado para agendar o script);
-*/10 * * * * <caminho_do_script> (*/10: significa "a cada 10 minutos", o * corresponde a qualquer hora, dia, mês e dia da semana);
-crontab -l (exibe as entradas recentemente adicionadas);
-sudo cat /etc/crontab && sudo cat /etc/cron.d/* (para garantir que não existem tarefas agendadas para rodar no boot).
+Commands:
+
+    crontab -e (used to schedule the script);
+    */10 * * * * <script_path> (*/10: means "every 10 minutes", * corresponds to any hour, day, month, and weekday);
+    crontab -l (shows recently added entries);
+    sudo cat /etc/crontab && sudo cat /etc/cron.d/* (to ensure no tasks are scheduled to run on boot).
 
 17 - Script
 
-    System Architecture (arc):
-        arc=$(uname -a): Gets the system's architecture information (kernel version, hostname, OS type, etc.).
+**System Architecture (arc)**:
+`arc=$(uname -a)`: Gets the system's architecture information (kernel version, hostname, OS type, etc.).
 
-    CPU Information:
-        pcpu=$(grep "physical id" /proc/cpuinfo | sort | uniq | wc -l): Counts the number of physical CPUs by looking at physical id in /proc/cpuinfo.
-        vcpu=$(grep "^processor" /proc/cpuinfo | wc -l): Counts the number of virtual CPUs (processors) in the system.
+**CPU Information**:
+`pcpu=$(grep "physical id" /proc/cpuinfo | sort | uniq | wc -l)`: Counts the number of physical CPUs by looking at physical id in /proc/cpuinfo.
+`vcpu=$(grep "^processor" /proc/cpuinfo | wc -l)`: Counts the number of virtual CPUs (processors) in the system.
 
-    Memory Information:
-        fram=$(free -m | awk '$1 == "Mem:" {print $2}'): Gets the total system memory in MB.
-        uram=$(free -m | awk '$1 == "Mem:" {print $3}'): Gets the used memory in MB.
-        pram=$(free | awk '$1 == "Mem:" {printf("%.2f"), $3/$2*100}'): Calculates and prints the percentage of used memory.
+**Memory Information**:
+`fram=$(free -m | awk '$1 == "Mem:" {print $2}')`: Gets the total system memory in MB.
+`uram=$(free -m | awk '$1 == "Mem:" {print $3}')`: Gets the used memory in MB.
+`pram=$(free | awk '$1 == "Mem:" {printf("%.2f"), $3/$2*100}')`: Calculates and prints the percentage of used memory.
 
-    Disk Information:
-        fdisk=$(df -BG | grep '^/dev/' | grep -v '/boot$' | awk '{ft += $2} END {print ft}'): Gets the total disk space used by all devices, excluding /boot.
-        udisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} END {print ut}'): Gets the used disk space in MB, excluding /boot.
-        pdisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} {ft+= $2} END {printf("%d"), ut/ft*100}'): Calculates the percentage of used disk space.
+**Disk Information**:
+`fdisk=$(df -BG | grep '^/dev/' | grep -v '/boot$' | awk '{ft += $2} END {print ft}')`: Gets the total disk space used by all devices, excluding /boot.
+`udisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} END {print ut}')`: Gets the used disk space in MB, excluding /boot.
+`pdisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} {ft+= $2} END {printf("%d"), ut/ft*100}')`: Calculates the percentage of used disk space.
 
-    CPU Load:
-        cpul=$(top -bn1 | grep '^%Cpu' | cut -c 9- | xargs | awk '{printf("%.1f%%"), $1 + $3}'): Fetches the current CPU load (user + system).
+**CPU Load**:
+`cpul=$(top -bn1 | grep '^%Cpu' | cut -c 9- | xargs | awk '{printf("%.1f%%"), $1 + $3}')`: Fetches the current CPU load (user + system).
 
-    Last Boot:
-        lb=$(who -b | awk '$1 == "system" {print $3 " " $4}'): Shows the date and time of the last system boot.
+**Last Boot**:
+`lb=$(who -b | awk '$1 == "system" {print $3 " " $4}')`: Shows the date and time of the last system boot.
 
-    LVM Usage:
-        lvmu=$(if [ $(lsblk | grep "lvm" | wc -l) -eq 0 ]; then echo no; else echo yes; fi): Checks if LVM (Logical Volume Manager) is being used by searching for "lvm" in the block devices.
+**LVM Usage**:
+`lvmu=$(if [ $(lsblk | grep "lvm" | wc -l) -eq 0 ]; then echo no; else echo yes; fi)`: Checks if LVM (Logical Volume Manager) is being used by searching for "lvm" in the block devices.
 
-    Network Connections:
-        ctcp=$(ss -Ht state established | wc -l): Counts the number of established TCP connections.
+**Network Connections**:
+`ctcp=$(ss -Ht state established | wc -l)`: Counts the number of established TCP connections.
 
-    User Logins:
-        ulog=$(users | wc -w): Counts the number of currently logged-in users.
+**User Logins**:
+`ulog=$(users | wc -w)`: Counts the number of currently logged-in users.
 
-    Network Information:
-        ip=$(hostname -I): Gets the system's IP address.
-        mac=$(ip link show | grep "ether" | awk '{print $2}'): Retrieves the MAC address of the system.
+**Network Information**:
+`ip=$(hostname -I)`: Gets the system's IP address.
+`mac=$(ip link show | grep "ether" | awk '{print $2}')`: Retrieves the MAC address of the system.
 
-    Sudo Command Usage:
-        cmds=$(journalctl _COMM=sudo | grep COMMAND | wc -l): Counts the number of commands run using sudo (from the journal logs).
+**Sudo Command Usage**:
+`cmds=$(journalctl _COMM=sudo | grep COMMAND | wc -l)`: Counts the number of commands run using sudo (from the journal logs).
 
-    Wall Command:
-        Finally, the wall command is used to broadcast the collected system information to all logged-in users. The information includes:
-            Architecture
-            CPU (physical and virtual)
-            Memory usage (total and used with percentage)
-            Disk usage (total, used with percentage)
-            CPU load
-            Last boot time
-            LVM usage
-            Number of established TCP connections
-            Logged-in users
-            Network details (IP and MAC addresses)
-            Number of sudo commands executed
+**Wall Command**:
+The `wall` command is used to broadcast the collected system information to all logged-in users. The information includes:
+- Architecture
+- CPU (physical and virtual)
+- Memory usage (total and used with percentage)
+- Disk usage (total, used with percentage)
+- CPU load
+- Last boot time
+- LVM usage
+- Number of established TCP connections
+- Logged-in users
+- Network details (IP and MAC addresses)
+- Number of sudo commands executed
 
 The script combines a lot of useful system information into a readable format and outputs it to all logged-in users.
+
 Improvements / Potential Issues:
 
-    Disk Information Calculation: Your pdisk calculation might have a bug with the format. It uses df -BM (MB), but ft is calculated in GB in the fdisk variable. This might create inconsistency unless you standardize the units. Consider using consistent units for both fdisk and udisk.
-
+    Disk Information Calculation: The pdisk calculation might have a bug with the format. It uses df -BM (MB), but ft is calculated in GB in the fdisk variable. This might create inconsistency unless you standardize the units. Consider using consistent units for both fdisk and udisk.
     Efficiency: The grep and awk commands in multiple places could be optimized to avoid redundant parsing. For example, you could calculate total disk usage and memory usage in a single command rather than separate ones.
-
     Error Handling: Some commands (like ss or top) might fail on systems where they're not installed. You might want to add error checks or fallbacks for such cases to make the script more robust.
-
     Output Formatting: You could format the output more clearly (e.g., aligning columns) to make it easier to read, especially when it's displayed by wall.
